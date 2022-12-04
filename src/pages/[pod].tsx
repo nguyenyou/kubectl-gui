@@ -1,5 +1,6 @@
 import { kubeDeletePod, kubeDescribePods, kubeGetLogs, kubeGetPodYaml } from '@/commands'
 import ErrorBoundary from '@/components/ErrorBoundary'
+import HashLoader from '@/components/Loaders/HashLoader'
 import { Spinner } from '@/components/Spinner'
 import { toastStyle } from '@/config'
 import { ArrowLeftIcon, TrashIcon } from '@heroicons/react/24/outline'
@@ -18,21 +19,29 @@ const PodPage = () => {
   const [isDeleting, setIsDeleting] = useState(false)
   const router = useRouter()
   const { pod } = router.query
-  const { data: describeData } = useQuery({
+  const { data: describeData, isLoading: isLoadingDescribe } = useQuery({
     queryKey: ['describe', pod],
     queryFn: () => kubeDescribePods(pod as string),
     refetchInterval: 2000,
   })
-  const { data: yamlData } = useQuery({
+  const { data: yamlData, isLoading: isLoadingYaml } = useQuery({
     queryKey: ['yaml', pod],
     queryFn: () => kubeGetPodYaml(pod as string),
     refetchInterval: 2000,
   })
-  const { data: logsData } = useQuery({
+  const { data: logsData, isLoading: isLoadingLogs } = useQuery({
     queryKey: ['logs', pod],
     queryFn: () => kubeGetLogs(pod as string),
     refetchInterval: 2000,
   })
+
+  if (isLoadingDescribe || isLoadingYaml || isLoadingLogs) {
+    return (
+      <div className='flex h-screen w-screen items-center justify-center'>
+        <HashLoader />
+      </div>
+    )
+  }
 
   const handleChangeTab = (tab: string) => {
     setCurrentTab(tab as TabValue)

@@ -107,8 +107,12 @@ function App() {
   }
 
   return (
-    <Tabs.Root value={currentWorkload} onValueChange={handleChangeTab} className='grid grid-cols-[130px_1fr] text-sm'>
-      <div className='px-2 py-2 text-[13px]'>
+    <Tabs.Root
+      value={currentWorkload}
+      onValueChange={handleChangeTab}
+      className='grid grid-cols-[1fr] pl-[130px] pt-[44px] text-sm'
+    >
+      <div className='fixed left-0 top-0 bottom-0 w-[130px] px-2 py-2 text-[13px]'>
         <div>
           <div className='mb-1 text-xs text-primary-400'>Context</div>
           <div className='px-1'>{currentContext}</div>
@@ -136,20 +140,22 @@ function App() {
           </Tabs.Trigger>
         </Tabs.List>
       </div>
-      <div className='px-3 py-2'>
-        <div className='flex items-center justify-between'>
-          <input
-            value={filterName}
-            onChange={(e) => setFilterPods(e.target.value)}
-            className='rounded border border-primary-700 bg-primary-900 px-2 py-1 text-primary-400 focus:border-primary-600 focus:outline-none'
-            placeholder='Filter'
-            autoCapitalize='off'
-            autoCorrect='off'
-            autoComplete='off'
-          />
-          <div>Total: {podLines.length} pods</div>
+      <div className=''>
+        <div className='fixed left-[130px] right-0 top-0 h-[44px] px-3 bg-primary-900'>
+          <div className='flex items-center justify-between h-full'>
+            <input
+              value={filterName}
+              onChange={(e) => setFilterPods(e.target.value)}
+              className='rounded border border-primary-700 bg-primary-900 px-2 py-1 text-primary-400 focus:border-primary-600 focus:outline-none'
+              placeholder='Filter'
+              autoCapitalize='off'
+              autoCorrect='off'
+              autoComplete='off'
+            />
+            <div>Total: {podLines.length} pods</div>
+          </div>
         </div>
-        <div className='mt-2'>
+        <div className='px-3'>
           <Tabs.Content value='pods'>
             <table className='w-full'>
               <thead>
