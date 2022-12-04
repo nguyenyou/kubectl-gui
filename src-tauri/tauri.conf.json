@@ -16,24 +16,33 @@
       "shell": {
         "all": true,
         "execute": true,
-        "sidecar": true, 
+        "sidecar": true,
         "open": true,
         "scope": [
           {
             "name": "kubectl-get-pods",
             "cmd": "kubectl",
-            "args": [
-              "get",
-              "pods"
-            ]
+            "args": ["get", "pods"]
           },
           {
             "name": "kubectl-config-current-context",
             "cmd": "kubectl",
-            "args": [
-              "config",
-              "current-context"
-            ]
+            "args": ["config", "current-context"]
+          },
+          {
+            "name": "kubectl-describe-pod",
+            "cmd": "kubectl",
+            "args": ["describe", "pods", { "validator": "\\S+" }]
+          },
+          {
+            "name": "kubectl-get-pod-yaml",
+            "cmd": "kubectl",
+            "args": ["get", "pods", { "validator": "\\S+" }, "-o", "yaml"]
+          },
+          {
+            "name": "kubectl-get-logs",
+            "cmd": "kubectl",
+            "args": ["logs", { "validator": "\\S+" }, "--tail", "200"]
           }
         ]
       }

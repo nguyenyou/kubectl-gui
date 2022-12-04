@@ -1,4 +1,5 @@
 import { currentContextAtom, filterPodsAtom } from "@/atoms";
+import { getCurrentContext, getPodsInfo } from "@/commands";
 import PodItem from "@/components/PodItem";
 import PodItems from "@/components/PodItems";
 import { Pod } from "@/types";
@@ -7,16 +8,6 @@ import { Command } from "@tauri-apps/api/shell";
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
-
-async function getPodsInfo() {
-  const { stdout } = await new Command("kubectl-get-pods", ["get", "pods"]).execute();
-  return stdout;
-}
-
-async function getCurrentContext() {
-  const { stdout } = await new Command("kubectl-config-current-context", ["config", "current-context"]).execute();
-  return stdout;
-}
 
 function App() {
   const [filterPods, setFilterPods] = useAtom(filterPodsAtom);
@@ -61,13 +52,13 @@ function App() {
   const rows = pods.slice(1);
 
   return (
-    <div className="bg-neutral-800 text-neutral-300 p-3">
+    <div className="p-3">
       <div>Current context: {currentContext}</div>
       <div className="flex items-center justify-between mt-2">
         <input
           value={filterPods}
           onChange={(e) => setFilterPods(e.target.value)}
-          className="border rounded px-2 py-1 text-neutral-600"
+          className="border focus:outline-none bg-primary-100 rounded px-2 py-1 text-primary-600"
           placeholder="filter"
           autoCapitalize="off"
           autoCorrect="off"
@@ -79,13 +70,13 @@ function App() {
         <table className="w-full">
           <thead>
             <tr>
-              <th className="text-left px-2 border-b py-1">{headers.name}</th>
-              <th className="text-left px-2 border-b py-1">{headers.ready}</th>
-              <th className="text-left px-2 border-b py-1">{headers.status}</th>
-              <th className="text-left px-2 border-b py-1">
+              <th className="text-left px-2 border-b border-primary-500 py-1">{headers.name}</th>
+              <th className="text-left px-2 border-b border-primary-500 py-1">{headers.ready}</th>
+              <th className="text-left px-2 border-b border-primary-500 py-1">{headers.status}</th>
+              <th className="text-left px-2 border-b border-primary-500 py-1">
                 {headers.restarts}
               </th>
-              <th className="text-left px-2 border-b py-1">{headers.age}</th>
+              <th className="text-left px-2 border-b border-primary-500 py-1">{headers.age}</th>
             </tr>
           </thead>
           <PodItems pods={rows} />
