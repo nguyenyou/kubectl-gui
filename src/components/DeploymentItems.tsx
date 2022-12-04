@@ -17,7 +17,7 @@ const DeploymentItems = ({ deployments }: Props) => {
   return (
     <tbody>
       {filteredDeployments.map((deployment) => (
-        <DeploymentItem deployment={deployment} />
+        <DeploymentItem key={deployment.name} deployment={deployment} />
       ))}
     </tbody>
   )

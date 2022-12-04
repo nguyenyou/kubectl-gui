@@ -17,7 +17,7 @@ const ServiceItems = ({ services }: Props) => {
   return (
     <tbody>
       {filteredServices.map((service) => (
-        <ServiceItem service={service} />
+        <ServiceItem key={service.name} service={service} />
       ))}
     </tbody>
   )

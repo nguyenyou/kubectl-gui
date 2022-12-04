@@ -1,6 +1,7 @@
 import { currentContextAtom, currentWorkloadAtom, filterNameAtom, Workload } from '@/atoms'
 import { getCurrentContext, kubeGetDeployments, kubeGetPods, kubeGetServices } from '@/commands'
 import DeploymentItems from '@/components/DeploymentItems'
+import HashLoader from '@/components/Loaders/HashLoader'
 import PodItems from '@/components/PodItems'
 import ServiceItems from '@/components/ServiceItems'
 import { Deployment, Pod, Service } from '@/types'
@@ -36,7 +37,11 @@ function App() {
   }, [])
 
   if (queryPods.isLoading || queryDeployments.isLoading || queryServices.isLoading) {
-    return <div className='p-3'>Loading...</div>
+    return (
+      <div className='flex h-screen w-screen items-center justify-center'>
+        <HashLoader />
+      </div>
+    )
   }
   if (queryPods.isError || queryDeployments.isError || queryServices.isError) {
     return <div className='p-3'>Error</div>

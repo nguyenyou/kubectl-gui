@@ -5,6 +5,11 @@ export async function kubeDescribePods(name: string) {
   return stdout
 }
 
+export async function kubeDeletePod(name: string) {
+  const { stdout } = await new Command('kubectl-delete-pod', ['delete', 'pods', name]).execute()
+  return stdout
+}
+
 export async function kubeGetPodYaml(name: string) {
   const { stdout } = await new Command('kubectl-get-pod-yaml', ['get', 'pods', name, '-o', 'yaml']).execute()
   return stdout

@@ -35,6 +35,11 @@
             "args": ["describe", "pods", { "validator": "\\S+" }]
           },
           {
+            "name": "kubectl-delete-pod",
+            "cmd": "kubectl",
+            "args": ["delete", "pods", { "validator": "\\S+" }]
+          },
+          {
             "name": "kubectl-get-pod-yaml",
             "cmd": "kubectl",
             "args": ["get", "pods", { "validator": "\\S+" }, "-o", "yaml"]

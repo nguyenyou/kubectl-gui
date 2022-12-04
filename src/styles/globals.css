@@ -6,4 +6,5 @@ html,
 body {
   background-color: theme('colors.primary.900');
   color: theme('colors.primary.300');
+  font-size: 14px;
 }

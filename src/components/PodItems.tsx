@@ -17,7 +17,7 @@ const PodItems = ({ pods }: Props) => {
   return (
     <tbody>
       {filteredPods.map((pod) => (
-        <PodItem pod={pod} />
+        <PodItem key={pod.name} pod={pod} />
       ))}
     </tbody>
   )
