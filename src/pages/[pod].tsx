@@ -35,13 +35,13 @@ const PodPage = () => {
     refetchInterval: 2000,
   })
 
-  if (isLoadingDescribe || isLoadingYaml || isLoadingLogs) {
-    return (
-      <div className='flex h-screen w-screen items-center justify-center'>
-        <HashLoader />
-      </div>
-    )
-  }
+  // if (isLoadingDescribe || isLoadingYaml || isLoadingLogs) {
+  //   return (
+  //     <div className='flex h-screen w-screen items-center justify-center'>
+  //       <HashLoader />
+  //     </div>
+  //   )
+  // }
 
   const handleChangeTab = (tab: string) => {
     setCurrentTab(tab as TabValue)
