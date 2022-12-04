@@ -1,10 +1,10 @@
 [package]
-name = "tauri-app"
-version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+name = "kubectl-gui"
+version = "1.0.0"
+description = "Kubectl GUI"
+authors = ["tunguyen"]
+license = "MIT"
+repository = "https://github.com/tunguyen-ct/kubectl-gui"
 edition = "2021"
 rust-version = "1.57"
 

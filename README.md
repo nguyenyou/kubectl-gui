@@ -1,7 +1,26 @@
-# Tauri + Next.js + Typescript
+# Kubectl GUI
 
-This template should help get you started developing with Tauri, Next.js and Typescript.
+## Pre-requisites:
 
-## Recommended IDE Setup
+- Node.js v16.15
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+```
+curl -fsSL https://fnm.vercel.app/install | bash
+```
+Add the following to your .zshrc profile:
+
+```
+eval "$(fnm env --use-on-cd)"
+```
+
+- Rust 1.65.0
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+## How to build
+```
+corepack enable
+pnpm install
+pnpm tauri build
+```
