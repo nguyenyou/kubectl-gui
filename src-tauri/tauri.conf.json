@@ -43,6 +43,16 @@
             "name": "kubectl-get-logs",
             "cmd": "kubectl",
             "args": ["logs", { "validator": "\\S+" }, "--tail", "200"]
+          },
+          {
+            "name": "kubectl-get-services",
+            "cmd": "kubectl",
+            "args": ["get", "services"]
+          },
+          {
+            "name": "kubectl-get-deployments",
+            "cmd": "kubectl",
+            "args": ["get", "deployments"]
           }
         ]
       }

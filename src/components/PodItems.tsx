@@ -1,19 +1,18 @@
-import { filterPodsAtom } from "@/atoms";
-import { Pod } from "@/types";
-import { useAtomValue } from "jotai";
-import React from "react";
-import PodItem from "./PodItem";
+import { filterNameAtom } from '@/atoms'
+import { Pod } from '@/types'
+import { useAtomValue } from 'jotai'
+import PodItem from './PodItem'
 
 type Props = {
-  pods: Pod[];
-};
+  pods: Pod[]
+}
 
 const PodItems = ({ pods }: Props) => {
-  const filterPods = useAtomValue(filterPodsAtom);
+  const filterName = useAtomValue(filterNameAtom)
 
   const filteredPods = pods.filter((pod) => {
-    return pod.name.includes(filterPods);
-  });
+    return pod.name.includes(filterName)
+  })
 
   return (
     <tbody>
@@ -21,7 +20,7 @@ const PodItems = ({ pods }: Props) => {
         <PodItem pod={pod} />
       ))}
     </tbody>
-  );
-};
+  )
+}
 
-export default PodItems;
+export default PodItems

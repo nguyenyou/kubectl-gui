@@ -1,35 +1,31 @@
-import { Pod } from "@/types";
-import React from "react";
-import clsx from "clsx";
+import { Pod } from '@/types'
+import clsx from 'clsx'
 import Link from 'next/link'
 
 type Props = {
-  pod: Pod;
-};
+  pod: Pod
+}
 
 const PodItem = ({ pod }: Props) => {
+  const status = pod.status.toLowerCase()
+  let statusColor = 'text-rose-600'
+  if (status === 'running') statusColor = 'text-emerald-500'
+  if (status === 'completed') statusColor = 'text-gray-600'
+  if (status === 'terminating') statusColor = 'text-yellow-600'
+
   return (
     <tr key={pod.name}>
-      <td className="text-left px-2 border-b border-primary-500 py-1">
+      <td className='border-b border-primary-500 px-2 py-1 text-left'>
         <Link href={`/${pod.name}`}>
-          <a className="text-blue-600">{pod.name}</a>
+          <a className='text-sky-600 hover:text-sky-400'>{pod.name}</a>
         </Link>
       </td>
-      <td className={clsx("text-left px-2 border-b border-primary-500 py-1")}>{pod.ready}</td>
-      <td
-        className={clsx(
-          "text-left px-2 border-b border-primary-500 py-1",
-          pod.status.toLowerCase() === "running"
-            ? "text-green-600"
-            : "text-red-600"
-        )}
-      >
-        {pod.status}
-      </td>
-      <td className="text-left px-2 border-b border-primary-500 py-1">{pod.restarts}</td>
-      <td className="text-left px-2 border-b border-primary-500 py-1">{pod.age}</td>
+      <td className={clsx('border-b border-primary-500 px-2 py-1 text-left')}>{pod.ready}</td>
+      <td className={clsx('border-b border-primary-500 px-2 py-1 text-left', statusColor)}>{pod.status}</td>
+      <td className='border-b border-primary-500 px-2 py-1 text-left'>{pod.restarts}</td>
+      <td className='border-b border-primary-500 px-2 py-1 text-left'>{pod.age}</td>
     </tr>
-  );
-};
+  )
+}
 
-export default PodItem;
+export default PodItem
