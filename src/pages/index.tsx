@@ -5,13 +5,14 @@ import HashLoader from '@/components/Loaders/HashLoader'
 import PodItems from '@/components/PodItems'
 import ServiceItems from '@/components/ServiceItems'
 import { Deployment, Pod, Service } from '@/types'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 import * as Tabs from '@radix-ui/react-tabs'
 import { useQuery } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 
 function App() {
-  const [filterName, setFilterPods] = useAtom(filterNameAtom)
+  const [filterName, setFilterName] = useAtom(filterNameAtom)
   const [currentContext, setCurrentContext] = useAtom(currentContextAtom)
   const [currentWorkload, setCurrentWorkload] = useAtom(currentWorkloadAtom)
   const queryPods = useQuery({
@@ -35,6 +36,10 @@ function App() {
       setCurrentContext(context)
     })
   }, [])
+
+  const handleRemoveSearch = () => {
+    setFilterName('')
+  }
 
   if (queryPods.isLoading || queryDeployments.isLoading || queryServices.isLoading) {
     return (
@@ -141,17 +146,27 @@ function App() {
         </Tabs.List>
       </div>
       <div className=''>
-        <div className='fixed left-[130px] right-0 top-0 h-[44px] px-3 bg-primary-900'>
-          <div className='flex items-center justify-between h-full'>
-            <input
-              value={filterName}
-              onChange={(e) => setFilterPods(e.target.value)}
-              className='rounded border border-primary-700 bg-primary-900 px-2 py-1 text-primary-400 focus:border-primary-600 focus:outline-none'
-              placeholder='Filter'
-              autoCapitalize='off'
-              autoCorrect='off'
-              autoComplete='off'
-            />
+        <div className='fixed left-[130px] right-0 top-0 h-[44px] bg-primary-900 px-3'>
+          <div className='flex h-full items-center justify-between'>
+            <div className='relative inline-block w-auto'>
+              <input
+                value={filterName}
+                onChange={(e) => setFilterName(e.target.value)}
+                className='rounded border border-primary-700 bg-primary-900 py-1 pr-7 pl-2 text-primary-400 focus:border-primary-600 focus:outline-none'
+                placeholder='Filter'
+                autoCapitalize='off'
+                autoCorrect='off'
+                autoComplete='off'
+              />
+              {filterName && (
+                <button
+                  onClick={handleRemoveSearch}
+                  className='absolute right-[8px] top-[6px] inline-flex h-4 w-4 items-center justify-center rounded-full hover:bg-primary-600 active:bg-primary-700'
+                >
+                  <XMarkIcon className='h-3 w-3' />
+                </button>
+              )}
+            </div>
             <div>Total: {podLines.length} pods</div>
           </div>
         </div>
