@@ -39,3 +39,16 @@ export async function kubeGetDeployments() {
   const { stdout } = await new Command('kubectl-get-deployments', ['get', 'deployments']).execute()
   return stdout
 }
+
+export async function kubeGetContexts() {
+  const { stdout } = await new Command('kubectl-get-contexts', ['config', 'get-contexts']).execute()
+  return stdout
+}
+
+export async function kubeSwitchContext(name: string) {
+  const { stdout } = await new Command('kubectl-switch-context', ['config', 'use-context', name]).execute()
+  return stdout
+}
+
+
+// kubectl-switch-context

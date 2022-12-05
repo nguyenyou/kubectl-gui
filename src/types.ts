@@ -22,3 +22,11 @@ export type Deployment = {
   available: string
   age: string
 }
+
+export type Context = {
+  current: string
+  name: string
+  cluster: string
+  authInfo: string
+  namespace: string
+}

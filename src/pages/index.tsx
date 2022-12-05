@@ -1,19 +1,22 @@
 import { currentWorkloadAtom, filterNameAtom, Workload } from '@/atoms'
-import { getCurrentContext, kubeGetDeployments, kubeGetPods, kubeGetServices } from '@/commands'
+import { getCurrentContext, kubeGetContexts, kubeGetDeployments, kubeGetPods, kubeGetServices, kubeSwitchContext } from '@/commands'
 import DeploymentsTab from '@/components/Deployments'
 import HashLoader from '@/components/Loaders/HashLoader'
 import PodsTab from '@/components/Pods'
 import ServicesTab from '@/components/Services'
-import { Deployment, Pod, Service } from '@/types'
+import { Context, Deployment, Pod, Service } from '@/types'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import * as Tabs from '@radix-ui/react-tabs'
 import { useQuery } from '@tanstack/react-query'
+import clsx from 'clsx'
 import { useAtom } from 'jotai'
+import { useEffect, useState } from 'react'
 
 function App() {
   const [filterName, setFilterName] = useAtom(filterNameAtom)
   const [currentWorkload, setCurrentWorkload] = useAtom(currentWorkloadAtom)
-  
+  const [currContext, setCurrContext] = useState('')
+
   const queryCurrentContext = useQuery({
     queryKey: ['currentContext'],
     queryFn: () => getCurrentContext(),
@@ -21,25 +24,36 @@ function App() {
   })
   let currentContext = queryCurrentContext?.data ?? ''
   const queryPods = useQuery({
-    queryKey: ['pods', currentContext],
+    queryKey: ['pods', currContext],
     queryFn: kubeGetPods,
     refetchInterval: 2000,
   })
   const queryServices = useQuery({
-    queryKey: ['services', currentContext],
+    queryKey: ['services', currContext],
     queryFn: () => kubeGetServices(),
     refetchInterval: 5000,
   })
   const queryDeployments = useQuery({
-    queryKey: ['deployments', currentContext],
+    queryKey: ['deployments', currContext],
     queryFn: () => kubeGetDeployments(),
     refetchInterval: 5000,
   })
+  const queryContexts = useQuery({
+    queryKey: ['contexts'],
+    queryFn: () => kubeGetContexts(),
+  })
+
+  console.log(queryContexts?.data)
+
+  useEffect(() => {
+    setCurrContext(currentContext)
+  }, [currentContext])
+
   const handleRemoveSearch = () => {
     setFilterName('')
   }
 
-  if (queryPods.isLoading || queryDeployments.isLoading || queryServices.isLoading) {
+  if (queryPods.isLoading || queryDeployments.isLoading || queryServices.isLoading || queryCurrentContext.isLoading) {
     return (
       <div className='flex h-screen w-screen items-center justify-center'>
         <HashLoader />
@@ -99,46 +113,84 @@ function App() {
     }
   })
 
+  const contexts: Context[] = []
+  const contextLines = queryContexts?.data?.split('\n')
+  contextLines?.forEach((line) => {
+    const columns = line.split(/\s+/)
+    if (columns.length === 5) {
+      const context: Context = {
+        current: columns[0],
+        name: columns[1],
+        cluster: columns[2],
+        authInfo: columns[3],
+        namespace: columns[4],
+      }
+      contexts.push(context)
+    }
+  })
+
   const handleChangeTab = (tab: string) => {
     setCurrentWorkload(tab as Workload)
+  }
+
+  const handleSwitchContext = async (context: string) => {
+    try {
+      setCurrContext(context)
+      await kubeSwitchContext(context)
+    } catch {
+      // do nothing
+    }
   }
 
   return (
     <Tabs.Root
       value={currentWorkload}
       onValueChange={handleChangeTab}
-      className='grid grid-cols-[1fr] pl-[130px] pt-[44px] text-sm'
+      className='grid grid-cols-[1fr] pl-[160px] pt-[44px] text-sm'
     >
-      <div className='fixed left-0 top-0 bottom-0 w-[130px] px-2 py-2 text-[13px]'>
-        <div>
-          <div className='mb-1 text-xs text-primary-400'>Context</div>
-          <div className='px-1'>{queryCurrentContext?.data}</div>
+      <div className='fixed left-0 top-0 bottom-0 grid w-[160px] grid-cols-[30px_1fr] pr-2 text-[13px]'>
+        <div className='flex h-full flex-col border-r border-primary-800'>
+          {contexts.slice(1).map((context) => (
+            <div
+              className={clsx(currContext === context.name && 'bg-primary-700', 'flex flex-1 rotate-180 cursor-pointer select-none items-center justify-center truncate whitespace-nowrap py-2 hover:bg-primary-600')}
+              style={{ writingMode: 'vertical-rl' }}
+              onClick={() => handleSwitchContext(context.name)}
+            >
+              {context.name}
+            </div>
+          ))}
         </div>
-        <Tabs.List className='mt-4 flex flex-col items-start'>
-          <div className='mb-1 text-xs text-primary-400'>Workloads</div>
-          <Tabs.Trigger
-            className='w-full flex-1 rounded py-1 px-1 text-left hover:bg-primary-700 data-[state=active]:bg-primary-700 data-[state=active]:text-gray-200'
-            value='pods'
-          >
-            <div>Pods</div>
-          </Tabs.Trigger>
-          <Tabs.Trigger
-            className='mt-1 w-full flex-1 rounded py-1 px-1 text-left hover:bg-primary-700 data-[state=active]:bg-primary-700 data-[state=active]:text-gray-200'
-            value='deployments'
-          >
-            <div>Deployments</div>
-          </Tabs.Trigger>
-          <div className='mb-1 mt-4 text-xs text-primary-400'>Networking</div>
-          <Tabs.Trigger
-            className='w-full flex-1 rounded py-1 px-1 text-left hover:bg-primary-700 data-[state=active]:bg-primary-700 data-[state=active]:text-gray-200'
-            value='services'
-          >
-            <div>Services</div>
-          </Tabs.Trigger>
-        </Tabs.List>
+        <div className='py-2 pl-2'>
+          <div>
+            <div className='mb-1 text-xs text-primary-400'>Context</div>
+            <div className='px-1'>{queryCurrentContext?.data}</div>
+          </div>
+          <Tabs.List className='mt-4 flex flex-col items-start'>
+            <div className='mb-1 text-xs text-primary-400'>Workloads</div>
+            <Tabs.Trigger
+              className='w-full flex-1 rounded py-1 px-1 text-left hover:bg-primary-700 data-[state=active]:bg-primary-700 data-[state=active]:text-gray-200'
+              value='pods'
+            >
+              <div>Pods</div>
+            </Tabs.Trigger>
+            <Tabs.Trigger
+              className='mt-1 w-full flex-1 rounded py-1 px-1 text-left hover:bg-primary-700 data-[state=active]:bg-primary-700 data-[state=active]:text-gray-200'
+              value='deployments'
+            >
+              <div>Deployments</div>
+            </Tabs.Trigger>
+            <div className='mb-1 mt-4 text-xs text-primary-400'>Networking</div>
+            <Tabs.Trigger
+              className='w-full flex-1 rounded py-1 px-1 text-left hover:bg-primary-700 data-[state=active]:bg-primary-700 data-[state=active]:text-gray-200'
+              value='services'
+            >
+              <div>Services</div>
+            </Tabs.Trigger>
+          </Tabs.List>
+        </div>
       </div>
       <div className=''>
-        <div className='fixed left-[130px] right-0 top-0 h-[44px] bg-primary-900 px-3'>
+        <div className='fixed left-[160px] right-0 top-0 h-[44px] bg-primary-900 px-3'>
           <div className='flex h-full items-center justify-between'>
             <div className='relative inline-block w-auto'>
               <input

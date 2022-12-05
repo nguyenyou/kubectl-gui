@@ -1,4 +1,4 @@
-import Loader from 'react-spinners/HashLoader'
+import Loader from 'react-spinners/ClimbingBoxLoader'
 import { neutral } from 'tailwindcss/colors'
 
 const HashLoader = () => {

@@ -6,6 +6,7 @@ specifiers:
   '@next/font': ^13.0.6
   '@radix-ui/react-tabs': ^1.0.1
   '@tanstack/react-query': ^4.19.1
+  '@tanstack/react-query-devtools': ^4.19.1
   '@tauri-apps/api': ^1.1.0
   '@tauri-apps/cli': ^1.1.0
   '@types/node': ^18.7.11
@@ -33,6 +34,7 @@ dependencies:
   '@next/font': 13.0.6
   '@radix-ui/react-tabs': 1.0.1_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-query': 4.19.1_biqbaboplfbrettd7655fr4n2y
+  '@tanstack/react-query-devtools': 4.19.1_xnkyuugmv5unvdsxvtkktqsuae
   '@tauri-apps/api': 1.2.0
   clsx: 1.2.1
   jotai: 1.11.0_react@18.2.0
@@ -406,8 +408,30 @@ packages:
       tslib: 2.4.1
     dev: false
 
+  /@tanstack/match-sorter-utils/8.7.0:
+    resolution: {integrity: sha512-OgfIPMHTfuw9JGcXCCoEHWFP/eSP2eyhCYwkrFnWBM3NbUPAgOlFP11DbM7cozDRVB0XbPr1tD4pLAtWKlVUVg==}
+    engines: {node: '>=12'}
+    dependencies:
+      remove-accents: 0.4.2
+    dev: false
+
   /@tanstack/query-core/4.19.1:
     resolution: {integrity: sha512-Zp0aIose5C8skBzqbVFGk9HJsPtUhRVDVNWIqVzFbGQQgYSeLZMd3Sdb4+EnA5wl1J7X+bre2PJGnQg9x/zHOA==}
+    dev: false
+
+  /@tanstack/react-query-devtools/4.19.1_xnkyuugmv5unvdsxvtkktqsuae:
+    resolution: {integrity: sha512-U63A+ly9JLPJj7ryR9omdXT3n+gS7jlExrHty4klsd/6xdUhC38CKZyZ0Gi3vctaVYRGTU8/vI+uKzBYdFqLaA==}
+    peerDependencies:
+      '@tanstack/react-query': 4.19.1
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@tanstack/match-sorter-utils': 8.7.0
+      '@tanstack/react-query': 4.19.1_biqbaboplfbrettd7655fr4n2y
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      superjson: 1.11.0
+      use-sync-external-store: 1.2.0_react@18.2.0
     dev: false
 
   /@tanstack/react-query/4.19.1_biqbaboplfbrettd7655fr4n2y:
@@ -662,6 +686,13 @@ packages:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
     dev: true
 
+  /copy-anything/3.0.3:
+    resolution: {integrity: sha512-fpW2W/BqEzqPp29QS+MwwfisHCQZtiduTe/m8idFo0xbti9fIZ2WVhAsCv4ggFVH3AgCkVdpoOCtQC6gBrdhjw==}
+    engines: {node: '>=12.13'}
+    dependencies:
+      is-what: 4.1.8
+    dev: false
+
   /cssesc/3.0.0:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
     engines: {node: '>=4'}
@@ -803,6 +834,11 @@ packages:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
     engines: {node: '>=0.12.0'}
     dev: true
+
+  /is-what/4.1.8:
+    resolution: {integrity: sha512-yq8gMao5upkPoGEU9LsB2P+K3Kt8Q3fQFCGyNCWOAnJAMzEXVV9drYb0TXr42TTliLLhKIBvulgAXgtLLnwzGA==}
+    engines: {node: '>=12.13'}
+    dev: false
 
   /jotai/1.11.0_react@18.2.0:
     resolution: {integrity: sha512-8OzJmRxcTZoAOJSz6uTnmofmjAOgNOdAOy26rvyw3OBxt6XIoklNnfUTCm8wgp84SSLJbPZA01VS5O/SUz+QYg==}
@@ -1163,6 +1199,10 @@ packages:
     resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
     dev: false
 
+  /remove-accents/0.4.2:
+    resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
+    dev: false
+
   /resolve/1.22.1:
     resolution: {integrity: sha512-nBpuuYuY5jFsli/JIs1oldw6fOQCBioohqWZg/2hiaOybXOft4lonv85uDOKXdf8rhyK159cxU5cDcK/NKk8zw==}
     hasBin: true
@@ -1212,6 +1252,13 @@ packages:
     dependencies:
       client-only: 0.0.1
       react: 18.2.0
+    dev: false
+
+  /superjson/1.11.0:
+    resolution: {integrity: sha512-6PfAg1FKhqkwWvPb2uXhH4MkMttdc17eJ91+Aoz4s1XUEDZFmLfFx/xVA3wgkPxAGy5dpozgGdK6V/n20Wj9yg==}
+    engines: {node: '>=10'}
+    dependencies:
+      copy-anything: 3.0.3
     dev: false
 
   /supports-preserve-symlinks-flag/1.0.0:

@@ -63,6 +63,16 @@
             "name": "kubectl-get-deployments",
             "cmd": "kubectl",
             "args": ["get", "deployments"]
+          },
+          {
+            "name": "kubectl-get-contexts",
+            "cmd": "kubectl",
+            "args": ["config", "get-contexts"]
+          },
+          {
+            "name": "kubectl-switch-context",
+            "cmd": "kubectl",
+            "args": ["config", "use-context", { "validator": "\\S+" }]
           }
         ]
       }
