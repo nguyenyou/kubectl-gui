@@ -13,7 +13,6 @@ import { useEffect } from 'react'
 
 function App() {
   const [filterName, setFilterName] = useAtom(filterNameAtom)
-  const [currentContext, setCurrentContext] = useAtom(currentContextAtom)
   const [currentWorkload, setCurrentWorkload] = useAtom(currentWorkloadAtom)
   const queryPods = useQuery({
     queryKey: ['pods'],
@@ -30,12 +29,11 @@ function App() {
     queryFn: () => kubeGetDeployments(),
     refetchInterval: 5000,
   })
-
-  useEffect(() => {
-    getCurrentContext().then((context) => {
-      setCurrentContext(context)
-    })
-  }, [])
+  const queryCurrentContext = useQuery({
+    queryKey: ['currentContext'],
+    queryFn: () => getCurrentContext(),
+    refetchInterval: 5000,
+  })
 
   const handleRemoveSearch = () => {
     setFilterName('')
@@ -114,7 +112,7 @@ function App() {
       <div className='fixed left-0 top-0 bottom-0 w-[130px] px-2 py-2 text-[13px]'>
         <div>
           <div className='mb-1 text-xs text-primary-400'>Context</div>
-          <div className='px-1'>{currentContext}</div>
+          <div className='px-1'>{queryCurrentContext?.data}</div>
         </div>
         <Tabs.List className='mt-4 flex flex-col items-start'>
           <div className='mb-1 text-xs text-primary-400'>Workloads</div>
