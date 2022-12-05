@@ -1,5 +1,4 @@
 import { Service } from '@/types'
-import React from 'react'
 import ServiceItems from './ServiceItems'
 
 type Props = {

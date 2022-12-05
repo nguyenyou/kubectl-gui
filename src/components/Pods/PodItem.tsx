@@ -16,8 +16,8 @@ const PodItem = ({ pod }: Props) => {
   return (
     <tr key={pod.name}>
       <td className='border-b border-primary-500 px-2 py-1 text-left'>
-        <Link href={`/${pod.name}`}>
-          <a className='text-sky-600 hover:text-sky-400'>{pod.name}</a>
+        <Link href={`/${pod.name}`} className='text-sky-600 hover:text-sky-400'>
+          {pod.name}
         </Link>
       </td>
       <td className={clsx('border-b border-primary-500 px-2 py-1 text-left')}>{pod.ready}</td>

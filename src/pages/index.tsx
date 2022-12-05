@@ -1,4 +1,4 @@
-import { currentContextAtom, currentWorkloadAtom, filterNameAtom, Workload } from '@/atoms'
+import { currentWorkloadAtom, filterNameAtom, Workload } from '@/atoms'
 import { getCurrentContext, kubeGetDeployments, kubeGetPods, kubeGetServices } from '@/commands'
 import DeploymentsTab from '@/components/Deployments'
 import HashLoader from '@/components/Loaders/HashLoader'
@@ -9,32 +9,32 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import * as Tabs from '@radix-ui/react-tabs'
 import { useQuery } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
-import { useEffect } from 'react'
 
 function App() {
   const [filterName, setFilterName] = useAtom(filterNameAtom)
   const [currentWorkload, setCurrentWorkload] = useAtom(currentWorkloadAtom)
-  const queryPods = useQuery({
-    queryKey: ['pods'],
-    queryFn: kubeGetPods,
-    refetchInterval: 2000,
-  })
-  const queryServices = useQuery({
-    queryKey: ['services'],
-    queryFn: () => kubeGetServices(),
-    refetchInterval: 5000,
-  })
-  const queryDeployments = useQuery({
-    queryKey: ['deployments'],
-    queryFn: () => kubeGetDeployments(),
-    refetchInterval: 5000,
-  })
+  
   const queryCurrentContext = useQuery({
     queryKey: ['currentContext'],
     queryFn: () => getCurrentContext(),
     refetchInterval: 5000,
   })
-
+  let currentContext = queryCurrentContext?.data ?? ''
+  const queryPods = useQuery({
+    queryKey: ['pods', currentContext],
+    queryFn: kubeGetPods,
+    refetchInterval: 2000,
+  })
+  const queryServices = useQuery({
+    queryKey: ['services', currentContext],
+    queryFn: () => kubeGetServices(),
+    refetchInterval: 5000,
+  })
+  const queryDeployments = useQuery({
+    queryKey: ['deployments', currentContext],
+    queryFn: () => kubeGetDeployments(),
+    refetchInterval: 5000,
+  })
   const handleRemoveSearch = () => {
     setFilterName('')
   }

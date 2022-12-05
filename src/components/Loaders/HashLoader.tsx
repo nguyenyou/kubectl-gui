@@ -1,4 +1,3 @@
-import React from 'react'
 import Loader from 'react-spinners/HashLoader'
 import { neutral } from 'tailwindcss/colors'
 

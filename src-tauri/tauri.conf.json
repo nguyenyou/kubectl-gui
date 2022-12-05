@@ -50,6 +50,11 @@
             "args": ["logs", { "validator": "\\S+" }, "--tail", "200"]
           },
           {
+            "name": "kubectl-get-logs-stream",
+            "cmd": "kubectl",
+            "args": ["logs", { "validator": "\\S+" }, "--follow", "--tail", { "validator": "\\S+" }]
+          },
+          {
             "name": "kubectl-get-services",
             "cmd": "kubectl",
             "args": ["get", "services"]
@@ -104,9 +109,9 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 800,
         "resizable": true,
-        "title": "kubectl-gui",
+        "title": "kubectl GUI",
         "width": 1200
       }
     ]

@@ -1,5 +1,5 @@
 import Editor from '@monaco-editor/react'
-import React from 'react'
+import { memo } from 'react'
 import CodeHighlight from './CodeHighlight'
 
 type Props = {
@@ -33,4 +33,4 @@ const StdoutView = ({ mode, codetext = 'Loading...' }: Props) => {
   )
 }
 
-export default StdoutView
+export default memo(StdoutView)

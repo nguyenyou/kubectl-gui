@@ -1,4 +1,3 @@
-import React from 'react'
 import Highlight, { defaultProps } from 'prism-react-renderer'
 import codeTheme from 'prism-react-renderer/themes/vsDark'
 

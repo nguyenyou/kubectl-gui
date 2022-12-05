@@ -1,5 +1,4 @@
 import { Deployment } from '@/types'
-import React from 'react'
 import DeploymentItems from './DeploymentItems'
 
 type Props = {

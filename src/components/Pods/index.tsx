@@ -1,5 +1,4 @@
 import { Pod } from '@/types'
-import React from 'react'
 import PodItems from './PodItems'
 
 type Props = {
