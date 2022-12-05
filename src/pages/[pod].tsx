@@ -109,7 +109,7 @@ const PodPage = () => {
           <div className='flex h-full flex-col'>
             <div className='flex-1'>
               <ErrorBoundary>
-                <StdoutView mode='prism' codetext={describeData ?? 'Loading...'} />
+                <StdoutView mode='vscode' codetext={describeData ?? 'Loading...'} />
               </ErrorBoundary>
             </div>
           </div>
