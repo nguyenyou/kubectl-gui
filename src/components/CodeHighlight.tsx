@@ -9,7 +9,7 @@ type Props = {
 const CodeHighlight = ({ codetext }: Props) => {
   return (
     <div className='px-3'>
-      <Highlight {...{ ...defaultProps, theme: codeTheme }} code={codetext} language='json'>
+      <Highlight {...{ ...defaultProps, theme: codeTheme }} code={codetext} language='yaml'>
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
           <pre className={className} style={style}>
             {tokens.map((line, i) => (
