@@ -1,7 +1,9 @@
 import { kubeDeletePod, kubeDescribePods, kubeGetLogs, kubeGetPodYaml } from '@/commands'
+import CodeHighlight from '@/components/CodeHighlight'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import HashLoader from '@/components/Loaders/HashLoader'
 import { Spinner } from '@/components/Spinner'
+import StdoutView from '@/components/StdoutView'
 import { toastStyle } from '@/config'
 import { ArrowLeftIcon, TrashIcon } from '@heroicons/react/24/outline'
 import Editor from '@monaco-editor/react'
@@ -107,15 +109,7 @@ const PodPage = () => {
           <div className='flex h-full flex-col'>
             <div className='flex-1'>
               <ErrorBoundary>
-                <Editor
-                  height='100%'
-                  language='yaml'
-                  theme='vs-dark'
-                  options={{
-                    readOnly: true,
-                  }}
-                  value={describeData ?? 'Loading...'}
-                />
+                <StdoutView mode='vscode' codetext={describeData ?? 'Loading...'} />
               </ErrorBoundary>
             </div>
           </div>
@@ -124,15 +118,7 @@ const PodPage = () => {
           <div className='flex h-full flex-col'>
             <div className='flex-1'>
               <ErrorBoundary>
-                <Editor
-                  height='100%'
-                  language='yaml'
-                  theme='vs-dark'
-                  options={{
-                    readOnly: true,
-                  }}
-                  value={yamlData ?? 'Loading...'}
-                />
+                <StdoutView mode='vscode' codetext={yamlData ?? 'Loading...'} />
               </ErrorBoundary>
             </div>
           </div>
@@ -141,15 +127,7 @@ const PodPage = () => {
           <div className='flex h-full flex-col'>
             <div className='flex-1'>
               <ErrorBoundary>
-                <Editor
-                  height='100%'
-                  language='json'
-                  theme='vs-dark'
-                  options={{
-                    readOnly: true,
-                  }}
-                  value={logsData ?? 'Loading...'}
-                />
+                <StdoutView mode='vscode' codetext={logsData ?? 'Loading...'} />
               </ErrorBoundary>
             </div>
           </div>
