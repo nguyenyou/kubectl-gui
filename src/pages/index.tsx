@@ -1,9 +1,12 @@
 import { currentContextAtom, currentWorkloadAtom, filterNameAtom, Workload } from '@/atoms'
 import { getCurrentContext, kubeGetDeployments, kubeGetPods, kubeGetServices } from '@/commands'
 import DeploymentItems from '@/components/DeploymentItems'
+import DeploymentsTab from '@/components/Deployments'
 import HashLoader from '@/components/Loaders/HashLoader'
 import PodItems from '@/components/PodItems'
+import PodsTab from '@/components/Pods'
 import ServiceItems from '@/components/ServiceItems'
+import ServicesTab from '@/components/Services'
 import { Deployment, Pod, Service } from '@/types'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import * as Tabs from '@radix-ui/react-tabs'
@@ -172,79 +175,13 @@ function App() {
         </div>
         <div className='px-3'>
           <Tabs.Content value='pods'>
-            <table className='w-full'>
-              <thead>
-                <tr>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {podHeaders.name}
-                  </th>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {podHeaders.ready}
-                  </th>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {podHeaders.status}
-                  </th>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {podHeaders.restarts}
-                  </th>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {podHeaders.age}
-                  </th>
-                </tr>
-              </thead>
-              <PodItems pods={podRows} />
-            </table>
+            <PodsTab pods={pods} />
           </Tabs.Content>
           <Tabs.Content value='services'>
-            <table className='w-full'>
-              <thead>
-                <tr>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {serviceHeaders.name}
-                  </th>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {serviceHeaders.type}
-                  </th>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {serviceHeaders.clusterIP}
-                  </th>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {serviceHeaders.externalIP}
-                  </th>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {serviceHeaders.ports}
-                  </th>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {serviceHeaders.age}
-                  </th>
-                </tr>
-              </thead>
-              <ServiceItems services={serviceRows} />
-            </table>
+            <ServicesTab services={services} />
           </Tabs.Content>
           <Tabs.Content value='deployments'>
-            <table className='w-full'>
-              <thead>
-                <tr>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {deploymentHeaders.name}
-                  </th>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {deploymentHeaders.ready}
-                  </th>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {deploymentHeaders.upToDate}
-                  </th>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {deploymentHeaders.available}
-                  </th>
-                  <th className='whitespace-nowrap border-b border-primary-500 px-2 py-1 text-left'>
-                    {deploymentHeaders.age}
-                  </th>
-                </tr>
-              </thead>
-              <DeploymentItems deployments={deploymentRows} />
-            </table>
+            <DeploymentsTab deployments={deployments} />
           </Tabs.Content>
         </div>
       </div>
