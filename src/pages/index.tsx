@@ -70,8 +70,6 @@ function App() {
       pods.push(pod)
     }
   })
-  const podHeaders = pods[0]
-  const podRows = pods.slice(1)
 
   const services: Service[] = []
   const serviceLines = queryServices?.data?.split('\n')
@@ -89,8 +87,6 @@ function App() {
       services.push(service)
     }
   })
-  const serviceHeaders = services[0]
-  const serviceRows = services.slice(1)
 
   const deployments: Deployment[] = []
   const deploymentLines = queryDeployments?.data?.split('\n')
@@ -107,8 +103,6 @@ function App() {
       deployments.push(deployment)
     }
   })
-  const deploymentHeaders = deployments[0]
-  const deploymentRows = deployments.slice(1)
 
   const handleChangeTab = (tab: string) => {
     setCurrentWorkload(tab as Workload)
