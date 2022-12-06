@@ -1,8 +1,9 @@
+import ServicesViewFeature from '@/features/ServicesView'
 import React from 'react'
 
 const ServicesPage = () => {
   return (
-    <div>ServicesPage</div>
+    <ServicesViewFeature />
   )
 }
 

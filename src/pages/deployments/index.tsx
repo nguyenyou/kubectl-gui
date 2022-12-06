@@ -1,9 +1,8 @@
+import DeploymentsViewFeature from '@/features/DeploymentsView'
 import React from 'react'
 
 const DeploymentsPage = () => {
-  return (
-    <div>DeploymentsPage</div>
-  )
+  return <DeploymentsViewFeature />
 }
 
 export default DeploymentsPage

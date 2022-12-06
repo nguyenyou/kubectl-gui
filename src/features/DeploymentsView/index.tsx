@@ -1,10 +1,9 @@
 import { currentContextLocalAtom } from '@/atoms'
-import { useAtomValue } from 'jotai'
-import React from 'react'
 import * as commands from '@/commands'
-import { useQuery } from '@tanstack/react-query'
-import { Deployment } from '@/types'
 import DeploymentsTab from '@/components/Deployments'
+import { Deployment } from '@/types'
+import { useQuery } from '@tanstack/react-query'
+import { useAtomValue } from 'jotai'
 
 const DeploymentsViewFeature = () => {
   const currContext = useAtomValue(currentContextLocalAtom)

@@ -1,5 +1,5 @@
 // Credit: https://github.com/badrap/bar-of-progress
-import { violet } from 'tailwindcss/colors'
+import { neutral } from 'tailwindcss/colors'
 type ProgressBarConfig = {
   /**
    * The size (height) of the progress bar.
@@ -34,7 +34,7 @@ export default class ProgressBar {
 
     const config: ProgressBarConfig = {
       size: 2,
-      color: violet['500'],
+      color: neutral['500'],
       className: 'bar-of-progress',
       delay: 100,
     }
