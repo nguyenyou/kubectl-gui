@@ -135,4 +135,6 @@ const PodPage = () => {
   )
 }
 
+PodPage.getLayout = (page) => <>{page}</>
+
 export default PodPage
