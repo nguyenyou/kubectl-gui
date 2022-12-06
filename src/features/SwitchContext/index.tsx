@@ -1,10 +1,9 @@
-import React from 'react'
-import * as commands from '@/commands'
 import { currentContextLocalAtom } from '@/atoms'
+import * as commands from '@/commands'
+import { Context } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
-import { useAtom, useAtomValue } from 'jotai'
-import { Context } from '@/types'
+import { useAtom } from 'jotai'
 
 const SwitchContextFeature = () => {
   const [currContext, setCurrContext] = useAtom(currentContextLocalAtom)

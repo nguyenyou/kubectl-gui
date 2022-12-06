@@ -1,6 +1,7 @@
 import { currentContextLocalAtom } from '@/atoms'
 import * as commands from '@/commands'
 import DeploymentsTab from '@/components/Deployments'
+import HashLoader from '@/components/Loaders/HashLoader'
 import { Deployment } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
@@ -8,17 +9,23 @@ import { useAtomValue } from 'jotai'
 const DeploymentsViewFeature = () => {
   const currContext = useAtomValue(currentContextLocalAtom)
 
-  const queryDeployments = useQuery({
+  const query = useQuery({
     queryKey: ['deployments', currContext],
     queryFn: () => commands.kubeGetDeployments(),
     refetchInterval: 5000,
   })
 
-  if (queryDeployments.isLoading) return <span>Loading...</span>
-  if (queryDeployments.isError) return <span>Error...</span>
+  if (query.isLoading)
+    return (
+      <div className='flex h-full items-center justify-center'>
+        <HashLoader />
+      </div>
+    )
+
+  if (query.isError) return <span>Error...</span>
 
   const deployments: Deployment[] = []
-  const deploymentLines = queryDeployments?.data?.split('\n')
+  const deploymentLines = query?.data?.split('\n')
   deploymentLines?.forEach((line) => {
     const columns = line.split(/\s+/)
     if (columns.length === 5) {
@@ -33,9 +40,7 @@ const DeploymentsViewFeature = () => {
     }
   })
 
-  return (
-    <DeploymentsTab deployments={deployments} />
-  )
+  return <DeploymentsTab deployments={deployments} />
 }
 
 export default DeploymentsViewFeature
