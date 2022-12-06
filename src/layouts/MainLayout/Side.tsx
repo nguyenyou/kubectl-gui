@@ -1,17 +1,17 @@
 import { currentContextLocalAtom } from '@/atoms'
-import * as commands from '@/commands'
+import * as apis from '@/apis'
 import ActiveLink from '@/components/ActiveLink'
 import SwitchContext from '@/features/SwitchContext'
 import { useQuery } from '@tanstack/react-query'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 
-const TopBar = () => {
+const Sidebar = () => {
   const setCurrContext = useSetAtom(currentContextLocalAtom)
 
   const queryCurrentContext = useQuery({
     queryKey: ['currentContext'],
-    queryFn: () => commands.getCurrentContext(),
+    queryFn: () => apis.getCurrentContext(),
     refetchInterval: 5000,
   })
 
@@ -59,4 +59,4 @@ const TopBar = () => {
   )
 }
 
-export default TopBar
+export default Sidebar

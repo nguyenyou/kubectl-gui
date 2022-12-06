@@ -7,6 +7,8 @@ type Props = {
   pod: string
 }
 
+let messages = ''
+
 const LogStreamModule = ({ pod }: Props) => {
   const [logsArray, setLogsArray] = useState<string[]>([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -16,12 +18,16 @@ const LogStreamModule = ({ pod }: Props) => {
   const child = useRef(null)
 
   const onMessage = (value) => {
+    console.log('on message')
     const newMessage = typeof value === 'string' ? value : JSON.stringify(value)
     messages.current.unshift(newMessage)
+    console.log(messages.current.length, 'messages.current length')
     setLogsArray(messages.current)
   }
 
   const spawn = () => {
+    console.log('start stream');
+    
     child.current = null
     const command = new Command('kubectl-get-logs-stream', ['logs', pod, '--follow', '--tail', '5'])
     command.on('close', (data) => {
@@ -72,6 +78,7 @@ const LogStreamModule = ({ pod }: Props) => {
     setLogsArray([])
   }
 
+  console.log(logsArray.length, 'logsArray')
   let filteredLogs = logsArray.filter((log) => log.includes(filterTerm))
 
   if(showLines) {

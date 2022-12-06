@@ -1,9 +1,7 @@
 import ServicesViewFeature from '@/features/ServicesView'
 
 const ServicesPage = () => {
-  return (
-    <ServicesViewFeature />
-  )
+  return <ServicesViewFeature />
 }
 
 export default ServicesPage

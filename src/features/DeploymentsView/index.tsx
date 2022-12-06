@@ -1,33 +1,38 @@
 import * as apis from '@/apis'
-import { currentContextLocalAtom } from '@/atoms'
+import { currentContextLocalAtom, totalCountAtom } from '@/atoms'
 import DeploymentsTab from '@/components/Deployments'
 import HashLoader from '@/components/Loaders/HashLoader'
 import { useQuery } from '@tanstack/react-query'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 
 const DeploymentsViewFeature = () => {
   const currContext = useAtomValue(currentContextLocalAtom)
+  const setTotalCount = useSetAtom(totalCountAtom)
 
-  const query = useQuery({
+  const { isLoading, isError, data } = useQuery({
     queryKey: ['deployments', currContext],
     queryFn: () => apis.getDeployments(),
     refetchInterval: 5000,
   })
 
-  if (query.isLoading)
+  useEffect(() => {
+    if (data) {
+      setTotalCount(`${data.length} deployments`)
+    }
+  }, [data, setTotalCount])
+
+  if (isLoading)
     return (
       <div className='flex h-full items-center justify-center'>
         <HashLoader />
       </div>
     )
 
-  if (query.isError) return <span>Error...</span>
+  if (isError) return <span>Error...</span>
 
   return (
-    <div>
-      <div>Total: {query.data.length}</div>
-      <DeploymentsTab deployments={query.data} />
-    </div>
+    <DeploymentsTab deployments={data} />
   )
 }
 

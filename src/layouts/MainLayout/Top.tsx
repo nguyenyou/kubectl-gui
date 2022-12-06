@@ -1,17 +1,20 @@
-import { filterNameAtom } from '@/atoms'
+import { currentContextLocalAtom, filterNameAtom, totalCountAtom } from '@/atoms'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 
 const SideBar = () => {
   const [filterName, setFilterName] = useAtom(filterNameAtom)
+  const currContext = useAtomValue(currentContextLocalAtom)
+
+  const totalCount = useAtomValue(totalCountAtom)
 
   const handleRemoveSearch = () => {
     setFilterName('')
   }
 
   return (
-    <div className='fixed left-[160px] right-0 top-0 h-[44px] bg-primary-900 px-3'>
-      <div className='flex h-full items-center justify-between'>
+    <div className='fixed left-[160px] right-0 top-0 h-[44px] bg-primary-900 px-3 text-sm'>
+      <div className='flex h-full items-center gap-4'>
         <div className='relative inline-block w-auto'>
           <input
             value={filterName}
@@ -30,6 +33,10 @@ const SideBar = () => {
               <XMarkIcon className='h-3 w-3' />
             </button>
           )}
+        </div>
+        <div className='flex gap-2 items-center'>
+          <span className='w-2 h-2 bg-green-500 inline-block rounded-full'/>
+          <span>{totalCount}</span>
         </div>
       </div>
     </div>

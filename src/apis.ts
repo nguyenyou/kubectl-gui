@@ -1,8 +1,8 @@
 import * as commands from './commands'
-import { Deployment, Pod, Service } from './types'
+import { Deployment, Pod, Service, Context } from './types'
 
 export async function getPods() {
-  const raw = await commands.kubeGetPods()
+  const raw = await commands.kubectl(['get', 'pods'])
 
   const pods: Pod[] = []
   const podLines = raw.split('\n')
@@ -25,7 +25,7 @@ export async function getPods() {
 }
 
 export async function getServices() {
-  const raw = await commands.kubeGetServices()
+  const raw = await commands.kubectl(['get', 'services'])
 
   const services: Service[] = []
   const serviceLines = raw.split('\n')
@@ -49,7 +49,7 @@ export async function getServices() {
 }
 
 export async function getDeployments() {
-  const raw = await commands.kubeGetDeployments()
+  const raw = await commands.kubectl(['get', 'deployments'])
 
   const deployments: Deployment[] = []
   const deploymentLines = raw.split('\n')
@@ -69,4 +69,51 @@ export async function getDeployments() {
   })
 
   return deployments
+}
+
+export async function getContexts() {
+  const raw = await commands.kubectl(['config', 'get-contexts'])
+
+  const contexts: Context[] = []
+  const contextLines = raw.split('\n')
+  contextLines?.forEach((line) => {
+    const columns = line.split(/\s+/)
+    if (columns.length === 5) {
+      const context: Context = {
+        current: columns[0],
+        name: columns[1],
+        cluster: columns[2],
+        authInfo: columns[3],
+        namespace: columns[4],
+      }
+      contexts.push(context)
+    }
+  })
+
+  return contexts
+}
+
+export async function getCurrentContext() {
+  const raw = await commands.kubectl(['config', 'current-context'])
+  return raw
+}
+
+export async function switchContext(name: string) {
+  const raw = await commands.kubectl(['config', 'use-context', name])
+  return raw
+}
+
+export async function getPodYaml(name: string) {
+  const raw = await commands.kubectl(['get', 'pods', name, '-o', 'yaml'])
+  return raw
+}
+
+export async function deletePod(name: string) {
+  const raw = await commands.kubectl(['delete', 'pods', name])
+  return raw
+}
+
+export async function describePod(name: string) {
+  const raw = await commands.kubectl(['describe', 'pods', name])
+  return raw
 }

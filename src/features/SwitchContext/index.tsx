@@ -1,6 +1,5 @@
+import * as apis from '@/apis'
 import { currentContextLocalAtom } from '@/atoms'
-import * as commands from '@/commands'
-import { Context } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { useAtom } from 'jotai'
@@ -8,34 +7,18 @@ import { useAtom } from 'jotai'
 const SwitchContextFeature = () => {
   const [currContext, setCurrContext] = useAtom(currentContextLocalAtom)
 
-  const queryContexts = useQuery({
+  const { isError, isLoading, data } = useQuery({
     queryKey: ['contexts'],
-    queryFn: () => commands.kubeGetContexts(),
+    queryFn: () => apis.getContexts(),
   })
 
-  if (queryContexts.isLoading) return <span />
-  if (queryContexts.isError) return <span />
-
-  const contexts: Context[] = []
-  const contextLines = queryContexts?.data?.split('\n')
-  contextLines?.forEach((line) => {
-    const columns = line.split(/\s+/)
-    if (columns.length === 5) {
-      const context: Context = {
-        current: columns[0],
-        name: columns[1],
-        cluster: columns[2],
-        authInfo: columns[3],
-        namespace: columns[4],
-      }
-      contexts.push(context)
-    }
-  })
+  if (isLoading) return <span />
+  if (isError) return <span />
 
   const handleSwitchContext = async (context: string) => {
     try {
       setCurrContext(context)
-      await commands.kubeSwitchContext(context)
+      await apis.switchContext(context)
     } catch {
       // do nothing
     }
@@ -43,8 +26,9 @@ const SwitchContextFeature = () => {
 
   return (
     <div className='flex h-full flex-col border-r border-primary-800'>
-      {contexts.slice(1).map((context) => (
+      {data.slice(1).map((context, idx) => (
         <div
+          key={idx}
           className={clsx(
             currContext === context.name && 'bg-primary-700',
             'flex flex-1 rotate-180 cursor-pointer select-none items-center justify-center truncate whitespace-nowrap py-2 hover:bg-primary-600'
