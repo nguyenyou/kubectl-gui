@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 html,
+body,
+#__next {
+  height: 100%;
+}
+
+html,
 body {
   background-color: theme('colors.primary.900');
   color: theme('colors.primary.300');
