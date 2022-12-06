@@ -1,8 +1,7 @@
+import * as apis from '@/apis'
 import { currentContextLocalAtom } from '@/atoms'
-import * as commands from '@/commands'
 import HashLoader from '@/components/Loaders/HashLoader'
 import ServicesTab from '@/components/Services'
-import { Service } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
 
@@ -11,7 +10,7 @@ const ServicesViewFeature = () => {
 
   const query = useQuery({
     queryKey: ['services', currContext],
-    queryFn: () => commands.kubeGetServices(),
+    queryFn: () => apis.getServices(),
     refetchInterval: 5000,
   })
 
@@ -23,24 +22,12 @@ const ServicesViewFeature = () => {
     )
   if (query.isError) return <span>Error...</span>
 
-  const services: Service[] = []
-  const serviceLines = query?.data?.split('\n')
-  serviceLines?.forEach((line) => {
-    const columns = line.split(/\s+/)
-    if (columns.length === 6) {
-      const service: Service = {
-        name: columns[0],
-        type: columns[1],
-        clusterIP: columns[2],
-        externalIP: columns[3],
-        ports: columns[4],
-        age: columns[5],
-      }
-      services.push(service)
-    }
-  })
-
-  return <ServicesTab services={services} />
+  return (
+    <div>
+      <div>Total: {query.data.length}</div>
+      <ServicesTab services={query.data} />
+    </div>
+  )
 }
 
 export default ServicesViewFeature

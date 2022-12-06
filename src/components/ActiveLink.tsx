@@ -1,6 +1,6 @@
-import { useRouter } from 'next/router'
 import Link, { LinkProps } from 'next/link'
-import React, { PropsWithChildren, useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { PropsWithChildren, useEffect, useState } from 'react'
 
 type ActiveLinkProps = LinkProps & {
   className?: string

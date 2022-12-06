@@ -1,6 +1,6 @@
 import React from 'react'
-import SideBar from './Top'
 import TopBar from './Side'
+import SideBar from './Top'
 
 type Props = {
   children: React.ReactNode

@@ -4,7 +4,6 @@ import ActiveLink from '@/components/ActiveLink'
 import SwitchContext from '@/features/SwitchContext'
 import { useQuery } from '@tanstack/react-query'
 import { useSetAtom } from 'jotai'
-import Link from 'next/link'
 import { useEffect } from 'react'
 
 const TopBar = () => {
