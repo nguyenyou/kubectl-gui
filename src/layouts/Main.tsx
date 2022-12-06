@@ -1,5 +1,6 @@
 import { currentContextLocalAtom, filterNameAtom } from '@/atoms'
 import * as commands from '@/commands'
+import HashLoader from '@/components/Loaders/HashLoader'
 import SwitchContext from '@/features/SwitchContext'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { useQuery } from '@tanstack/react-query'
@@ -13,7 +14,7 @@ type Props = {
 
 const MainLayout = (props: Props) => {
   const { children } = props
-  const setCurrContext = useSetAtom(currentContextLocalAtom)
+  const [currContext, setCurrContext] = useAtom(currentContextLocalAtom)
   const [filterName, setFilterName] = useAtom(filterNameAtom)
 
   const queryCurrentContext = useQuery({
@@ -21,6 +22,12 @@ const MainLayout = (props: Props) => {
     queryFn: () => commands.getCurrentContext(),
     refetchInterval: 5000,
   })
+  const queryPods = useQuery({
+    queryKey: ['pods', currContext],
+    queryFn: commands.kubeGetPods,
+    refetchInterval: 2000,
+  })
+
   let currentContext = queryCurrentContext?.data ?? ''
 
   useEffect(() => {
@@ -29,6 +36,14 @@ const MainLayout = (props: Props) => {
 
   const handleRemoveSearch = () => {
     setFilterName('')
+  }
+
+  if (queryPods.isLoading) {
+    return (
+      <div className='flex h-screen w-screen items-center justify-center'>
+        <HashLoader />
+      </div>
+    )
   }
 
   return (
