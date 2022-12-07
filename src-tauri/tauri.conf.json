@@ -20,11 +20,6 @@
         "open": true,
         "scope": [
           {
-            "name": "kubectl-get-logs-stream",
-            "cmd": "kubectl",
-            "args": ["logs", { "validator": "\\S+" }, "--follow", "--tail", { "validator": "\\S+" }]
-          },
-          {
             "name": "kubectl",
             "cmd": "kubectl",
             "args": true

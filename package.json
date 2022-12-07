@@ -26,7 +26,8 @@
     "react-dom": "^18.2.0",
     "react-highlight-words": "^0.18.0",
     "react-hot-toast": "^2.4.0",
-    "react-spinners": "^0.13.7"
+    "react-spinners": "^0.13.7",
+    "zustand": "^4.1.5"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.1.0",

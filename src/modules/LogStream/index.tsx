@@ -2,84 +2,88 @@ import ErrorBoundary from '@/components/ErrorBoundary'
 import { Command } from '@tauri-apps/api/shell'
 import { useEffect, useRef, useState } from 'react'
 import Highlighter from 'react-highlight-words'
+import { useLogsStore } from './store'
 
 type Props = {
   pod: string
 }
 
-let messages = ''
+let messages = []
+let child = null
+
+const append = useLogsStore.getState().appendLog
+
+const onMessage = (value) => {
+  // console.log('on message')
+  const newMessage = typeof value === 'string' ? value : JSON.stringify(value)
+  append(newMessage)
+  messages.unshift(newMessage)
+  // console.log(messages.length, 'messages.current length')
+}
+
+const spawn = (pod: string) => {
+  // console.log('start stream');
+  
+  child = null
+  const command = new Command('kubectl', ['logs', pod, '--follow', '--tail', '5'])
+  command.on('close', (data) => {
+    onMessage(`command finished with code ${data.code} and signal ${data.signal}`)
+    child = null
+  })
+  command.on('error', (error) => onMessage(`${error}`))
+  command.stdout.on('data', (line) => onMessage(`${line}`))
+  command.stderr.on('data', (line) => onMessage(`${line}`))
+  command
+    .spawn()
+    .then((c) => {
+      child = c
+    })
+    .catch(onMessage)
+}
 
 const LogStreamModule = ({ pod }: Props) => {
-  const [logsArray, setLogsArray] = useState<string[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filterTerm, setFilterTerm] = useState('')
   const [showLines, setShowLines] = useState(false)
-  const messages = useRef<string[]>([])
-  const child = useRef(null)
-
-  const onMessage = (value) => {
-    console.log('on message')
-    const newMessage = typeof value === 'string' ? value : JSON.stringify(value)
-    messages.current.unshift(newMessage)
-    console.log(messages.current.length, 'messages.current length')
-    setLogsArray(messages.current)
-  }
-
-  const spawn = () => {
-    console.log('start stream');
-    
-    child.current = null
-    const command = new Command('kubectl-get-logs-stream', ['logs', pod, '--follow', '--tail', '5'])
-    command.on('close', (data) => {
-      onMessage(`command finished with code ${data.code} and signal ${data.signal}`)
-      child.current = null
-    })
-    command.on('error', (error) => onMessage(`${error}`))
-    command.stdout.on('data', (line) => onMessage(`${line}`))
-    command.stderr.on('data', (line) => onMessage(`${line}`))
-    command
-      .spawn()
-      .then((c) => {
-        child.current = c
-      })
-      .catch(onMessage)
-  }
+  const logs = useLogsStore((state) => state.logs)
+  const clearLogs = useLogsStore(state => state.clearLogs)
 
   useEffect(() => {
     return () => {
+      messages = []
+      clearLogs()
       if (child) {
         try {
-          child.current?.kill?.()
+          child?.kill?.()
         } catch {
           // do nothing
         }
       }
     }
-  }, [])
+  }, [clearLogs])
 
   const kill = async () => {
     if (child) {
       try {
-        await child.current?.kill?.()
+        await child?.kill?.()
       } catch {
         // do nothing
       }
     }
   }
   const handleStartStreaming = () => {
-    spawn()
+    spawn(pod)
   }
   const handleStopStreaming = async () => {
     await kill()
   }
 
   const handleClearLogs = () => {
-    messages.current = []
-    setLogsArray([])
+    messages = []
+    clearLogs()
   }
 
-  console.log(logsArray.length, 'logsArray')
-  let filteredLogs = logsArray.filter((log) => log.includes(filterTerm))
+  let filteredLogs = logs.filter((log) => log.includes(filterTerm))
 
   if(showLines) {
     filteredLogs = filteredLogs.map((log, index) => {
@@ -134,21 +138,9 @@ const LogStreamModule = ({ pod }: Props) => {
             autoCorrect='off'
           />
         </div>
-        <div>Total streamed lines: {logsArray.length}</div>
+        <div>Total streamed lines: {logs.length}</div>
       </div>
       <ErrorBoundary>
-        {/* <Editor
-          height='100%'
-          language='plaintext'
-          theme='vs-dark'
-          options={{
-            readOnly: true,
-          }}
-          value={logsStream}
-        /> */}
-        {/* <pre>
-          {logsStream}
-        </pre> */}
         <div className='h-[616px] rounded overflow-auto px-3 py-1 border mx-3 border-primary-700'>
           <Highlighter
             className='whitespace-pre-wrap'
