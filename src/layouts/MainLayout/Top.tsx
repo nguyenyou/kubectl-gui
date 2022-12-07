@@ -1,10 +1,21 @@
 import { currentContextLocalAtom, filterNameAtom, totalCountAtom } from '@/atoms'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import { useQuery } from '@tanstack/react-query'
 import { useAtom, useAtomValue } from 'jotai'
+import * as apis from '@/apis'
+import clsx from 'clsx'
 
 const SideBar = () => {
   const [filterName, setFilterName] = useAtom(filterNameAtom)
   const currContext = useAtomValue(currentContextLocalAtom)
+
+  const queryCurrentContext = useQuery({
+    queryKey: ['currentContext'],
+    queryFn: () => apis.getCurrentContext(),
+    refetchInterval: 5000,
+  })
+
+  const isSwitchingContext = queryCurrentContext?.data !== currContext
 
   const totalCount = useAtomValue(totalCountAtom)
 
@@ -35,7 +46,7 @@ const SideBar = () => {
           )}
         </div>
         <div className='flex gap-2 items-center'>
-          <span className='w-2 h-2 bg-green-500 inline-block rounded-full'/>
+          <span className={clsx(isSwitchingContext ? 'bg-neutral-500' : 'bg-green-400', 'transition-colors w-3 h-3 inline-block rounded-full')}/>
           <span>{totalCount}</span>
         </div>
       </div>
