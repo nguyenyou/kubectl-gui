@@ -19,6 +19,17 @@ export async function getPods() {
       }
       pods.push(pod)
     }
+
+    if (columns.length === 7) {
+      const pod: Pod = {
+        name: columns[0],
+        ready: columns[1],
+        status: columns[2],
+        restarts: `${columns[3]} ${columns[4]} ${columns[5]}`,
+        age: columns[6],
+      }
+      pods.push(pod)
+    }
   })
 
   return pods
