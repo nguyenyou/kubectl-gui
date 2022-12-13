@@ -9,9 +9,10 @@ type Props = {
 const PodItem = ({ pod }: Props) => {
   const status = pod.status.toLowerCase()
   let statusColor = 'text-rose-600'
-  if (status === 'running') statusColor = 'text-emerald-500'
+  if (status === 'running') statusColor = 'text-emerald-600'
   if (status === 'completed') statusColor = 'text-gray-600'
   if (status === 'terminating') statusColor = 'text-yellow-600'
+  if (status === 'containercreating') statusColor = 'text-amber-600'
 
   return (
     <tr key={pod.name}>
